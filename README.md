@@ -1,4 +1,4 @@
-```md
+
 # Spring Boot Backend Application
 
 Production-ready backend application built using **Spring Boot** and **Java 17**, following industry-standard practices for RESTful API development and database persistence.
