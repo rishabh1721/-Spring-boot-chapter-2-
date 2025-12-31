@@ -11,6 +11,15 @@ public class EmployeeDTO {
     private LocalDate birthday;
     private Boolean isActive;
 
+    public EmployeeDTO(Long id, String name, String email, Integer age, LocalDate birthday, Boolean isActive) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.age = age;
+        this.birthday = birthday;
+        this.isActive = isActive;
+    }
+
     public Long getId() {
         return id;
     }
@@ -57,15 +66,6 @@ public class EmployeeDTO {
 
     public void setActive(Boolean active) {
         isActive = active;
-    }
-
-    public EmployeeDTO(Long id, String name, String email, Integer age, LocalDate birthday, Boolean isActive) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.age = age;
-        this.birthday = birthday;
-        this.isActive = isActive;
     }
 }
 
