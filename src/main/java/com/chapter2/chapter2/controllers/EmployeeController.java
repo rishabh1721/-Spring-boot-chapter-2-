@@ -4,7 +4,9 @@ import com.chapter2.chapter2.dto.EmployeeDTO;
 import com.chapter2.chapter2.entities.EmployeeEntity;
 import com.chapter2.chapter2.repositories.EmployeeRepository;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
@@ -16,43 +18,47 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;
     }
 
+    // Test endpoint
     @GetMapping("/hello")
     public String hello() {
         return "Hello World!";
     }
 
-    @GetMapping("/{employeeID}")
-    public EmployeeDTO getEmployeeById(
-            @PathVariable(name = "employeeID") Long employeeID
-    ) {
-        return new EmployeeDTO(
-                employeeID,
-                "rishabh",
-                "rishu@gmail.com",
-                21,
-                LocalDate.of(2025, 10, 10),
-                true
-//        return employeeRepository.findById(id).orElse(null);
-        );
-    }
-
+    // GET all employees
     @GetMapping
-    public String getAllEmployees(
-            @RequestParam(required = false) Integer age,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) LocalDate startDate,
-            @RequestParam(required = false) LocalDate endDate
-    ) {
-        return "Hi age " + age;
+    public List<EmployeeEntity> getAllEmployees() {
+        return employeeRepository.findAll();
     }
 
+    // GET employee by ID
+    @GetMapping("/{employeeID}")
+    public EmployeeEntity getEmployeeById(@PathVariable Long employeeID) {
+        return employeeRepository.findById(employeeID)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
+
+    // CREATE employee
     @PostMapping
-    public String createEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        return "hello from post";
+    public EmployeeEntity createEmployee(@RequestBody EmployeeEntity employee) {
+        return employeeRepository.save(employee);
     }
 
-    @PutMapping
-    public String updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        return "hello from put";
+    // UPDATE employee
+    @PutMapping("/{employeeID}")
+    public EmployeeEntity updateEmployee(
+            @PathVariable Long employeeID,
+            @RequestBody EmployeeEntity employee
+    ) {
+        EmployeeEntity existing = employeeRepository.findById(employeeID)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        existing.setName(employee.getName());
+        existing.setEmail(employee.getEmail());
+        existing.setAge(employee.getAge());
+        existing.setBirthday(employee.getBirthday());
+        existing.setIsActive(employee.getIsActive());
+
+        return employeeRepository.save(existing);
     }
 }
+
