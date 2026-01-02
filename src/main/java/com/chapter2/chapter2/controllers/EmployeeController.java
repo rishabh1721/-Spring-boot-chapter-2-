@@ -1,12 +1,20 @@
 package com.chapter2.chapter2.controllers;
 
 import com.chapter2.chapter2.dto.EmployeeDTO;
+import com.chapter2.chapter2.entities.EmployeeEntity;
+import com.chapter2.chapter2.repositories.EmployeeRepository;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
+
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @GetMapping("/hello")
     public String hello() {
@@ -24,6 +32,7 @@ public class EmployeeController {
                 21,
                 LocalDate.of(2025, 10, 10),
                 true
+//        return employeeRepository.findById(id).orElse(null);
         );
     }
 
